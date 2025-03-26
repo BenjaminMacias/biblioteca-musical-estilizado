@@ -22,7 +22,7 @@ const SongDetail = () => {
   if (error) return <div><p>{error}</p><button onClick={refetch}>Reintentar</button></div>;
   if (!data || !data.album) return <p>No se encontraron detalles.</p>;
 
-  const album = data.album[0]; // Tomamos el álbum
+  const album = data.album[0]; // se toma el álbum
 
   return (
     <div className="song-detail">

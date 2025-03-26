@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { SongContainer, SongTitle, SongInfo, AddButton, SongLink } from './Song.styles';
 
-const Song = ({ id, title, artist, duration, onAdd }) => {
+import { SongContainer, SongTitle, SongInfo, AddButton, RemoveButton, SongLink } from './Song.styles';
+
+const Song = ({ id, title, artist, duration, onAdd, onRemove }) => {
   return (
     <SongContainer>
       <SongTitle>
@@ -10,10 +10,17 @@ const Song = ({ id, title, artist, duration, onAdd }) => {
       </SongTitle>
       <SongInfo>Artist: {artist}</SongInfo>
       <SongInfo>Duration: {duration}</SongInfo>
+
       {onAdd && (
         <AddButton onClick={onAdd}>
           Agregar a mi biblioteca
         </AddButton>
+      )}
+
+      {onRemove && (
+        <RemoveButton onClick={onRemove}>
+          Eliminar
+        </RemoveButton>
       )}
     </SongContainer>
   );

@@ -1,8 +1,12 @@
-import React from 'react'; 
+import React from 'react';
 import Song from '../Song/Song';
+import { useDispatch } from 'react-redux';
+import { addSong } from '../../redux/libraryActions';
 import { ResultsContainer, ResultsList, Message, ErrorContainer, RetryButton } from './SearchResults.styles';
 
-const SearchResults = ({ data, loading, error, onAdd, refetch }) => {
+const SearchResults = ({ data, loading, error, refetch }) => {
+  const dispatch = useDispatch();
+
   if (loading) return <Message>Cargando...</Message>;
   if (error) return (
     <ErrorContainer>
@@ -14,6 +18,16 @@ const SearchResults = ({ data, loading, error, onAdd, refetch }) => {
 
   const albums = data.album;
 
+  const handleAdd = (album) => {
+    const songData = {
+      id: album.idAlbum,
+      title: album.strAlbum,
+      artist: album.strArtist,
+      album: album.strAlbum,  
+    };
+    dispatch(addSong(songData));
+  };
+
   return (
     <ResultsContainer>
       <h2>Resultados de búsqueda</h2>
@@ -24,7 +38,7 @@ const SearchResults = ({ data, loading, error, onAdd, refetch }) => {
               title={album.strAlbum}
               artist={album.strArtist}
               duration="N/A"
-              onAdd={() => onAdd(album)}
+              onAdd={() => handleAdd(album)}
             />
           </div>
         ))}

@@ -13,7 +13,7 @@ export const SongContainer = styled.div`
 
 export const SongTitle = styled.h3`
   margin: 0;
-  color: ${({ theme }) => theme.colors.text}; /* Usa color desde el theme */
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export const SongInfo = styled.p`
@@ -28,6 +28,24 @@ export const AddButton = styled.button`
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryHover || '#005fa3'};
+  }
+`;
+
+export const RemoveButton = styled.button`
+  background-color: ${({ theme }) => theme.colors.danger || '#e74c3c'};
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.dangerHover || '#c0392b'};
+  }
 `;
 
 export const SongLink = styled(Link)`
@@ -35,6 +53,6 @@ export const SongLink = styled(Link)`
   color: ${({ theme }) => theme.colors.text};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary}; /* Cambia color al pasar el mouse */
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
