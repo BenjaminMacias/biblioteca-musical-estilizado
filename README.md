@@ -1,3 +1,137 @@
+# 🎵 Biblioteca Musical (React + Redux Toolkit)
+
+## 🧾 Descripción del proyecto
+**Biblioteca Musical** es una SPA hecha con **React** y **Redux Toolkit** para explorar un catálogo de canciones/álbumes, buscar por nombre o artista, filtrar por género y gestionar **favoritos** y/o **cola de reproducción**.  
+El estado global se maneja con **RTK slices** y la UI está **estilizada** (por ejemplo con styled-components o CSS Modules, según el repo).
+
+---
+
+## 🧰 Tecnologías utilizadas
+- **React 18**
+- **Redux Toolkit** + **React-Redux**
+- **React Router** (ruteo SPA)
+- **Fetch / Axios** para datos (si aplica)
+- **styled-components / CSS Modules** (según tu implementación)
+- **Vite o Create React App** (según el `package.json`)
+
+---
+
+## ⚙️ Instrucciones de instalación y uso
+
+1) Clona e instala dependencias
+```bash
+git clone https://github.com/BenjaminMacias/biblioteca-musical-estilizado-redux-toolkit.git
+cd biblioteca-musical-estilizado-redux-toolkit
+npm install
+Ejecuta en desarrollo
+
+Usa el script que tenga tu package.json:
+
+# Vite
+npm run dev
+# ó Create React App
+npm start
+Compila para producción
+
+npm run build
+(Opcional) Si el proyecto trae datos mock en src/data/*.json, no necesitas backend.
+Si usa JSON Server, podrías lanzar algo como:
+
+npx json-server --watch src/data/tracks.json --port 4000
+y configurar la URL en el código/.env.
+
+🧪 Ejemplos de uso
+1) Estructura típica de un slice (Redux Toolkit)
+// src/store/favoritesSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+type Track = { id: string; title: string; artist: string; cover?: string };
+
+interface FavoritesState {
+  items: Track[];
+}
+
+const initialState: FavoritesState = { items: [] };
+
+const favoritesSlice = createSlice({
+  name: 'favorites',
+  initialState,
+  reducers: {
+    addFavorite(state, action: PayloadAction<Track>) {
+      const exists = state.items.some(t => t.id === action.payload.id);
+      if (!exists) state.items.push(action.payload);
+    },
+    removeFavorite(state, action: PayloadAction<string>) {
+      state.items = state.items.filter(t => t.id !== action.payload);
+    },
+    clearFavorites(state) {
+      state.items = [];
+    },
+  },
+});
+
+export const { addFavorite, removeFavorite, clearFavorites } = favoritesSlice.actions;
+export default favoritesSlice.reducer;
+2) Despachar acciones desde un componente
+import { useDispatch } from 'react-redux';
+import { addFavorite, removeFavorite } from '@/store/favoritesSlice';
+
+function TrackCard({ track }) {
+  const dispatch = useDispatch();
+  return (
+    <div>
+      <img src={track.cover} alt={track.title} />
+      <h3>{track.title}</h3>
+      <p>{track.artist}</p>
+
+      <button onClick={() => dispatch(addFavorite(track))}>
+        Añadir a favoritos
+      </button>
+      <button onClick={() => dispatch(removeFavorite(track.id))}>
+        Quitar de favoritos
+      </button>
+    </div>
+  );
+}
+3) Ejemplo de datos (mock)
+[
+  {
+    "id": "trk_001",
+    "title": "Nothing Else Matters",
+    "artist": "Metallica",
+    "genre": "Rock",
+    "cover": "/covers/metallica.jpg",
+    "duration": 388
+  },
+  {
+    "id": "trk_002",
+    "title": "Billie Jean",
+    "artist": "Michael Jackson",
+    "genre": "Pop",
+    "cover": "/covers/mj.jpg",
+    "duration": 294
+  }
+]
+4) Selectores simples
+// src/store/selectors.ts
+import { RootState } from './index';
+
+export const selectFavorites = (s: RootState) => s.favorites.items;
+export const selectByGenre = (genre: string) => (s: RootState) =>
+  s.library.items.filter(t => t.genre === genre);
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
